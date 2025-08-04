@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mamae-pingo-app:
+    build: .
+    container_name: mamae-pingo-evaluation
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./10%:/app/10%
+      - ./library:/app/library
+      - ./luciane:/app/luciane
+      - ./new_synthesized:/app/new_synthesized
+      - ./synthesized:/app/synthesized
+      - ./logo.png:/app/logo.png
+      - ./firebase-credentials.json:/app/firebase-credentials.json
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
+    restart: unless-stopped
+    networks:
+      - mamae-pingo-network
+
+  mamae-pingo-analytics:
+    build: .
+    container_name: mamae-pingo-analytics
+    command: streamlit run analytics.py
+    ports:
+      - "8502:8501"
+    volumes:
+      - ./firebase-credentials.json:/app/firebase-credentials.json
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - STREAMLIT_SERVER_HEADLESS=true
+    restart: unless-stopped
+    networks:
+      - mamae-pingo-network
+
+networks:
+  mamae-pingo-network:
+    driver: bridge
