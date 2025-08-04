@@ -5,3 +5,4 @@ Pillow==10.2.0
 plotly==5.18.0
 pandas==2.1.4
 boto3==1.40.2
+inotify
