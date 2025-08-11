@@ -385,7 +385,7 @@ def download_audio_from_s3(bucket, key):
 
 # Salvar avaliação no Firebase
 def save_evaluation(db, audio_id, original_name, score, category, duration, session_id):
-    doc_ref = db.collection("evaluations").document(f"{session_id}_{audio_id}")
+    doc_ref = db.collection(st.secrets["FIREBASE_DB_NAME"]).document(f"{session_id}_{audio_id}")
     doc_ref.set({
         "anonymous_id": audio_id,
         "original_filename": original_name,
